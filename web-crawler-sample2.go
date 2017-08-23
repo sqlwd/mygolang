@@ -19,7 +19,7 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	}
 	type Quit struct{}
 
-	ch := make(chan interface{}, 20)
+	ch := make(chan interface{}, 20) //only use one channel
 	crawler := func(url string, depth int) {
 		defer func() { ch <- Quit{} }()
 
@@ -41,7 +41,7 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	memo := make(map[string]bool)
 
 	ch <- URL{url, depth}
-
+	//not use select
 	for {
 		req := <-ch
 
